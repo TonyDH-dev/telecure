@@ -1,0 +1,332 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Tracking System</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .container {
+            background: white;
+            padding: 25px;
+            margin: 30px auto;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .history-container {
+            margin-top: 30px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#home">Home</a> | <a href="#diagnosis">Diagnosis</a> | <a href="#checkin">Check-In</a>
+    </div>
+    
+    <div id="home" class="container">
+        <h2>Home</h2>
+        <p><strong>Our Goal:</strong> [Description Here]</p>
+        <p><strong>How do we Diagnose?</strong> [Explanation Here]</p>
+        <p><strong>Check Ins:</strong> [Explanation Here]</p>
+    </div>
+    
+    <div id="diagnosis" class="container">
+        <h2>Diagnosis</h2>
+        <p><strong>How to Operate:</strong> [Instructions Here]</p>
+        <p><strong>Diagnosis Questions:</strong> [Questions Here]</p>
+    </div>
+    
+    <div id="checkin" class="container">
+        <h2>Check In</h2>
+        <p>(*) Indicates required field</p>
+        <form id="checkinForm">
+            <label for="firstName">* First Name:</label>
+            <input type="text" id="firstName" placeholder="Enter First Name" required>
+            
+            <label for="lastName">* Last Name:</label>
+            <input type="text" id="lastName" placeholder="Enter Last Name" required>
+            
+            <label for="medicine">Current Medication:</label>
+            <input type="text" id="medicine" placeholder="List of Current Medication" required>
+            
+            <label for="weight">Weight (kg):</label>
+            <input type="text" id="weight" placeholder="Enter Weight">
+            
+            <label for="bloodPressure">Blood Pressure (mmHg):</label>
+            <input type="text" id="bloodPressure" placeholder="Enter Blood Pressure">
+            
+            <label for="temperature">Temperature (°C):</label>
+            <input type="text" id="temperature" placeholder="Enter Temperature">
+            
+            <label for="oxygen">Oxygen Level (%):</label>
+            <input type="text" id="oxygen" placeholder="Enter Oxygen Level">
+            
+            <label for="glucose">Blood Glucose:</label>
+            <input type="text" id="glucose" placeholder="Enter Blood Glucose Level">
+            
+            <button type="button" onclick="saveCheckIn()">Submit</button>
+        </form>
+    </div>
+    
+    <div id="history" class="container history-container">
+        <h2>Check-In History</h2>
+        <ul id="historyList"></ul>
+    </div>
+    
+    <script>
+        function saveCheckIn() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const medicine = document.getElementById('medicine').value;
+            const weight = document.getElementById('weight').value;
+            const bloodPressure = document.getElementById('bloodPressure').value;
+            const temperature = document.getElementById('temperature').value;
+            const oxygen = document.getElementById('oxygen').value;
+            const glucose = document.getElementById('glucose').value;
+            
+            const historyList = document.getElementById('historyList');
+            const listItem = document.createElement('li');
+            listItem.textContent = `${firstName} ${lastName} - Medicine: ${medicine}, Weight: ${weight}kg, BP: ${bloodPressure}mmHg, Temp: ${temperature}°C, O2: ${oxygen}%, Glucose: ${glucose}`;
+            historyList.appendChild(listItem);
+        }
+    </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Tracking System</title>
+    <script src="kiosk.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #e3f2fd;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: 0.3s;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            margin: 30px auto;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h2 {
+            text-align: center;
+            color: #007bff;
+            font-weight: 600;
+        }
+        label {
+            font-weight: bold;
+            color: #444;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        .history-container {
+            margin-top: 30px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+        li:hover {
+            background: #e3f2fd;
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#home">Home</a> | <a href="#diagnosis">Diagnosis</a> | <a href="#checkin">Check-In</a>
+    </div>
+    
+    <div id="home" class="container">
+        <h2>Welcome to the Medicine Tracker</h2>
+        <p><strong>Our Goal:</strong> Ensure proper medicine tracking and health monitoring.</p>
+        <p><strong>How do we Diagnose?</strong> Our system records user inputs and tracks health trends.</p>
+        <p><strong>Check-Ins:</strong> Log your health updates daily.</p>
+    </div>
+    
+    <div id="diagnosis" class="container">
+        <h2>Diagnosis</h2>
+        <p><strong>How to Operate:</strong> Enter your details in the check-in section to maintain health logs.</p>
+    </div>
+    
+    <div id="checkin" class="container">
+        <h2>Check In</h2>
+        <form id="checkinForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" placeholder="Enter First Name" required>
+            
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" placeholder="Enter Last Name" required>
+            
+            <label for="medicine">Current Medication:</label>
+            <input type="text" id="medicine" placeholder="List of Current Medication" required>
+            
+            <label for="weight">Weight (kg):</label>
+            <input type="text" id="weight" placeholder="Enter Weight">
+            
+            <label for="bloodPressure">Blood Pressure (mmHg):</label>
+            <input type="text" id="bloodPressure" placeholder="Enter Blood Pressure">
+            
+            <label for="temperature">Temperature (°C):</label>
+            <input type="text" id="temperature" placeholder="Enter Temperature">
+            
+            <button type="button" onclick="saveCheckIn()">Submit</button>
+        </form>
+    </div>
+    
+    <div id="history" class="container history-container">
+        <h2>Check-In History</h2>
+        <ul id="historyList"></ul>
+    </div>
+    
+    <script>
+        function saveCheckIn() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const medicine = document.getElementById('medicine').value;
+            const weight = document.getElementById('weight').value;
+            const bloodPressure = document.getElementById('bloodPressure').value;
+            const temperature = document.getElementById('temperature').value;
+            
+            const historyList = document.getElementById('historyList');
+            const listItem = document.createElement('li');
+            listItem.textContent = `${firstName} ${lastName} - Medicine: ${medicine}, Weight: ${weight}kg, BP: ${bloodPressure}mmHg, Temp: ${temperature}°C`;
+            historyList.appendChild(listItem);
+        }
+    </script>
+</body>
+</html>
