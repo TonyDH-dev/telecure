@@ -39,6 +39,15 @@ async function askQuestion(query) {
     }));
 }
 
+async function savePatientsData(patientId, firstName, lastName, age, medicine, weight, bloodPressure, temperature, oxygenLevel, bloodGlucose, symptom) {
+    patientsData[patientId].firstName = firstName;
+    patientsData[patientId].lastName = lastName;
+    patientsData[patientId].age = age;
+    const diagnostics = { medicine, weight, bloodPressure, temperature, oxygenLevel, bloodGlucose, symptom };
+    patientsData[patientId].diagnostics = diagnostics;
+    
+}
+
 async function runDiagnostics(patientId) {
     console.log(`Running Diagnostics for Patient ${patientId}...`);
 

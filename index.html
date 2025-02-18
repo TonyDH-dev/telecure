@@ -164,7 +164,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicine Tracking System</title>
-    <script src="kiosk.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
         
@@ -204,6 +203,19 @@
         }
         .container:hover {
             transform: scale(1.02);
+        }
+        .screen_layout {
+            display: flex;
+        }
+        .patient {
+            flex: 1;
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+        .doctor {
+            flex: 1;
+            margin-left: 15px;
+            margin-left: 15px;
         }
         h2 {
             text-align: center;
@@ -277,55 +289,186 @@
         <p><strong>How do we Diagnose?</strong> Our system records user inputs and tracks health trends.</p>
         <p><strong>Check-Ins:</strong> Log your health updates daily.</p>
     </div>
-    
-    <div id="diagnosis" class="container">
-        <h2>Diagnosis</h2>
-        <p><strong>How to Operate:</strong> Enter your details in the check-in section to maintain health logs.</p>
-    </div>
-    
-    <div id="checkin" class="container">
-        <h2>Check In</h2>
-        <form id="checkinForm">
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" placeholder="Enter First Name" required>
+
+    <div id="screen_layout" class="screen_layout">
+        <div id="patient" class="patient">
+            Screen for Patient
+            <div id="diagnosis" class="container">
+                <h2>Diagnosis</h2>
+                <p><strong>How to Operate:</strong> Enter your details in the check-in section to maintain health logs.</p>
+            </div>
             
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" placeholder="Enter Last Name" required>
+            <div id="checkin" class="container">
+                <h2>Check In</h2>
+                <form id="checkinForm">
+                    <label for="patientId">Patient ID:</label>
+                    <input type="text" id="patientId" placeholder="Enter Patient ID" required>
+
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" placeholder="Enter First Name" required>
+                    
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" placeholder="Enter Last Name" required>
+                    
+                    <label for="firstName">Age:</label>
+                    <input type="text" id="age" placeholder="Enter Age" required>
+
+                    <label for="medicine">Current Medication:</label>
+                    <input type="text" id="medicine" placeholder="List of Current Medication" required>
+                    
+                    <label for="weight">Weight (kg):</label>
+                    <input type="text" id="weight" placeholder="Enter Weight">
+                    
+                    <label for="bloodPressure">Blood Pressure (mmHg):</label>
+                    <input type="text" id="bloodPressure" placeholder="Enter Blood Pressure">
+                    
+                    <label for="temperature">Temperature (°C):</label>
+                    <input type="text" id="temperature" placeholder="Enter Temperature">                    
+                    
+                    <label for="temperature">Oxygenlevel (%):</label>
+                    <input type="text" id="oxygenlevel" placeholder="Enter Oxygen Level">
+                    
+                    <label for="temperature">Blood Glucose (mg/dL):</label>
+                    <input type="text" id="bloodGlucose" placeholder="Enter Blood Glucose">
+                    
+                    <label for="symptom">Symptom:</label>
+                    <input type="text" id="symptom" placeholder="Enter symptom">
+                    
+                    <button type="button" onclick="saveCheckIn()">Submit</button>
+                </form>
+            </div>
             
-            <label for="medicine">Current Medication:</label>
-            <input type="text" id="medicine" placeholder="List of Current Medication" required>
-            
-            <label for="weight">Weight (kg):</label>
-            <input type="text" id="weight" placeholder="Enter Weight">
-            
-            <label for="bloodPressure">Blood Pressure (mmHg):</label>
-            <input type="text" id="bloodPressure" placeholder="Enter Blood Pressure">
-            
-            <label for="temperature">Temperature (°C):</label>
-            <input type="text" id="temperature" placeholder="Enter Temperature">
-            
-            <button type="button" onclick="saveCheckIn()">Submit</button>
-        </form>
-    </div>
-    
-    <div id="history" class="container history-container">
-        <h2>Check-In History</h2>
-        <ul id="historyList"></ul>
+            <div id="history" class="container history-container">
+                <h2>Check-In History</h2>
+                <ul id="historyList"></ul>
+            </div>
+        
+        </div>
+
+        <div id="doctor" class="doctor">
+            Screen for Doctor
+            <div id="diagnosis_doctor" class="container">
+                <h2>Diagnosis (auto-generated)</h2>
+                <ul id="diagnosis_doctorList"></ul>
+            </div>
+
+
+            <div id="confirm_doctor" class="container">
+                <h2>Doctor, do you want to confirm or change the diagnosis? (Type new diagnosis or press keave this blank to confirm).</h2>
+                
+                <form id="diagnosis_confirm_Form">
+                    <label for="confirmed_diagnosis_doctor">Confirmed diagnosis (leave blank to confirm as is):</label>
+                    <input type="text" id="confirmed_diagnosis_doctor" placeholder="">
+                </form>
+
+                <button type="button" onclick="doctorConfirm()">Confirm</button>
+        </div>    
+        <div id="doctor_history" class="container history-container">
+            <h2>Doctor History</h2>
+            <ul id="doctorHistoryList"></ul>
+        </div>
     </div>
     
     <script>
+
+        const patientsData = {};
+
+        const conditionDatabase = {
+            "Fever": ["Cold", "Flu", "COVID-19", "Malaria"],
+            "Headache": ["Migraine", "Tension Headache", "Sinusitis", "Dehydration"],
+            "Fatigue": ["Anemia", "Chronic Fatigue Syndrome", "Diabetes", "Thyroid Disorder"],
+            "Cough": ["Bronchitis", "Flu", "COVID-19", "Pneumonia", "Asthma"],
+            "Shortness of Breath": ["Asthma", "Pneumonia", "COPD", "Heart Disease"],
+            "Sore Throat": ["Strep Throat", "Tonsillitis", "Flu", "Cold"],
+            "Chest Pain": ["Heart Attack", "Pneumonia", "Acid Reflux", "Anxiety"],
+            "Dizziness": ["Anemia", "Dehydration", "Vertigo", "Low Blood Pressure"],
+            "Vomiting": ["Food Poisoning", "Gastroenteritis", "Pregnancy", "Migraine"],
+            "Joint Pain": ["Arthritis", "Lupus", "Gout", "Rheumatoid Arthritis"],
+            "Back Pain": ["Muscle Strain", "Herniated Disc", "Arthritis", "Ostesoporosis", "Sciatica", "Scoliosis"],
+            "Nausea": ["Pregnancy", "Motion Sickness", "Food poisoning", "Gastroenteritis", "Migraine"],
+            "Blurred Vision": ["Glaucoma", "Cataracts", "Diabetes", "Stroke", "Multiple Sclerosis", "Retinal Detachment"],
+        };
+
+        const prescriptions = {
+            "Cold": ["Paracetamol", "Cough syrup"],
+            "Flu": ["Tamiflu", "Hydration fluids"],
+            "COVID-19": ["Antiviral medication", "Oxygen therapy"],
+            "Bronchitis": ["Cough suppressants", "Antibiotics (if bacterial)"],
+            "Asthma": ["Inhaler", "Steroids"],
+            "Anemia": ["Iron supplements", "Vitamin B12"],
+            "Migraine": ["Ibuprofen", "Rest", "Hydration"],
+            "Diabetes": ["Insulin", "Metformin"],
+            "Arthritis": ["Pain relievers", "Anti-inflammatory drugs"]
+        };
+
+        async function savePatientData(patientId, firstName, lastName, age, medicine, weight, bloodPressure, temperature, oxygenLevel, bloodGlucose, symptom) {
+            patientsData[patientId].firstName = firstName;
+            patientsData[patientId].lastName = lastName;
+            patientsData[patientId].age = age;
+            const diagnostics = { medicine, weight, bloodPressure, temperature, oxygenLevel, bloodGlucose, symptom };
+            patientsData[patientId].diagnostics = diagnostics;
+            
+        }
+
+        function symptomChecker(symptoms) {
+            console.log("Checking Symptoms...");
+            let diagnosedConditions = new Set();
+
+            symptoms.forEach(symptom => {
+                if (conditionDatabase[symptom]) {
+                    conditionDatabase[symptom].forEach(condition => diagnosedConditions.add(condition));
+                }
+            });
+
+            return diagnosedConditions.size > 0 ? Array.from(diagnosedConditions) : ["No specific condition found. Please consult a doctor."];
+        }
+    </script>
+
+    <script>
         function saveCheckIn() {
+            const patientId = document.getElementById('patientId').value;
             const firstName = document.getElementById('firstName').value;
             const lastName = document.getElementById('lastName').value;
+            const age = document.getElementById('age').value;
             const medicine = document.getElementById('medicine').value;
             const weight = document.getElementById('weight').value;
             const bloodPressure = document.getElementById('bloodPressure').value;
             const temperature = document.getElementById('temperature').value;
+            const oxygenlevel = document.getElementById('oxygenlevel').value;
+            const bloodGlucose = document.getElementById('bloodGlucose').value;
+            const symptom = document.getElementById('symptom').value;
             
             const historyList = document.getElementById('historyList');
             const listItem = document.createElement('li');
-            listItem.textContent = `${firstName} ${lastName} - Medicine: ${medicine}, Weight: ${weight}kg, BP: ${bloodPressure}mmHg, Temp: ${temperature}°C`;
+            listItem.textContent = `Patient ${patientId} Checked in: ${firstName} ${lastName} (Age: ${age}) - Medicine: ${medicine}, Weight: ${weight} kg, BP: ${bloodPressure} mmHg, Temp: ${temperature} °C, Oxygenlevel: ${oxygenlevel} %, BloodGlucose: ${bloodGlucose} mg/dL, Symptom: ${symptom}`;
             historyList.appendChild(listItem);
+
+            // patientsData[patientId].firstName = firstName;
+            // patientsData[patientId].lastName = lastName;
+            // patientsData[patientId].age = age;
+            // const diagnostics = { medicine, weight, bloodPressure, temperature, oxygenLevel, bloodGlucose, symptom };
+            // patientsData[patientId].diagnostics = diagnostics;
+            savePatientData(patientId, firstName, lastName, age, medicine, weight, bloodPressure, temperature, oxygenlevel, bloodGlucose, symptom);
+
+            const listItem2 = document.createElement('li');
+            listItem2.textContent = `Checking diagnosis. Please wait...`;
+            historyList.appendChild(listItem2);
+
+            // run diagnosis
+            const diagnosis = symptomChecker(symptom);
+
+            // show doctor
+            const diagnosis_doctorList = document.getElementById('diagnosis_doctorList');
+            const listItem_doctor = document.createElement('li');
+            listItem_doctor.textContent = `Patient ${patientId} Checked in: ${firstName} ${lastName} (Age: ${age}) - Medicine: ${medicine}, Weight: ${weight} kg, BP: ${bloodPressure} mmHg, Temp: ${temperature} °C, Oxygenlevel: ${oxygenlevel} %, BloodGlucose: ${bloodGlucose} mg/dL, Symptom: ${symptom}`;
+            diagnosis_doctorList.appendChild(listItem_doctor);
+            
+            const listItem_doctor2 = document.createElement('li');
+            listItem_doctor2.textContent = `Diagnosis: ${diagnosis}`;
+            diagnosis_doctorList.appendChild(listItem_doctor2);
+            
+
+
         }
     </script>
 </body>
